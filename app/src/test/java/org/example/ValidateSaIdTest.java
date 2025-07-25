@@ -11,4 +11,19 @@ public class ValidateSaIdTest {
         assertTrue(ValidateSaId.isIdNumberValid("2001014800086"));
         assertTrue(ValidateSaId.isIdNumberValid("2909035800085"));
     }
+
+    @Test
+    public void shouldReturnFalseIfIdNumberIsTooShort() {
+        assertFalse(ValidateSaId.isIdNumberValid("20010148000")); // less than 13 digits
+    }
+
+    @Test
+    public void shouldReturnFalseIfIdNumberIsTooLong() {
+        assertFalse(ValidateSaId.isIdNumberValid("2001014800086123")); // more than 13 digits
+    }
+
+    @Test
+    public void shouldReturnFalseIfIdNumberContainsNonNumeric() {
+        assertFalse(ValidateSaId.isIdNumberValid("20010A4800086")); // contains 'A'
+    }
 }
