@@ -1,5 +1,7 @@
 package org.example;
 
+import java.time.LocalDate;
+
 public class ValidateSaId {
 
         public static boolean isIdNumberValid(String idNumber) {
@@ -66,5 +68,27 @@ public class ValidateSaId {
                 // Compare with the last digit
                 int actualCheckDigit = Character.getNumericValue(idNumber.charAt(12));
                 return checkDigit == actualCheckDigit;
+        }
+
+        // Method to extract birthdate from ID number
+        public static LocalDate getBirthDate(String idNumber) {
+                int year = Integer.parseInt(idNumber.substring(0, 2));
+                int month = Integer.parseInt(idNumber.substring(2, 4));
+                int day = Integer.parseInt(idNumber.substring(4, 6));
+
+                int currentYear = LocalDate.now().getYear() % 100;
+                int fullYear = (year > currentYear) ? 1900 + year : 2000 + year;
+
+                try {
+                        return LocalDate.of(fullYear, month, day);
+                } catch (java.time.DateTimeException e) {
+                        return null; // Invalid date
+                }
+        }
+
+        // Method to extract gender from ID number
+        public static String getGender(String idNumber) {
+                int genderDigits = Integer.parseInt(idNumber.substring(6, 10));
+                return (genderDigits >= 5000) ? "Male" : "Female";
         }
 }
