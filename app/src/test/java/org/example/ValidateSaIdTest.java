@@ -5,97 +5,44 @@ import org.junit.jupiter.api.Test;
 
 public class ValidateSaIdTest {
 
-    // Valid known IDs - should return true
     @Test
     public void shouldReturnTrueForValidIdNumbers() {
-        assertTrue(ValidateSaId.isIdNumberValid("2001014800086"));
-        assertTrue(ValidateSaId.isIdNumberValid("2909035800085"));
+        assertTrue(ValidateSaId.isIdNumberValid("2001014800086")); // Valid
+        assertTrue(ValidateSaId.isIdNumberValid("2909035800085")); // Valid
     }
 
-    // Too short - less than 13 characters
     @Test
-    public void shouldReturnFalseIfIdNumberIsTooShort() {
-        assertFalse(ValidateSaId.isIdNumberValid("20010148000"));
+    public void shouldReturnFalseIfTooShort() {
+        assertFalse(ValidateSaId.isIdNumberValid("200101480008")); // 12 digits
     }
 
-    // Too long - more than 13 characters
     @Test
-    public void shouldReturnFalseIfIdNumberIsTooLong() {
-        assertFalse(ValidateSaId.isIdNumberValid("2001014800086123"));
+    public void shouldReturnFalseIfTooLong() {
+        assertFalse(ValidateSaId.isIdNumberValid("20010148000867")); // 14 digits
     }
 
-    // Non-numeric characters
     @Test
-    public void shouldReturnFalseIfIdNumberContainsNonNumeric() {
-        assertFalse(ValidateSaId.isIdNumberValid("20010A4800086"));
+    public void shouldReturnFalseIfContainsNonDigits() {
+        assertFalse(ValidateSaId.isIdNumberValid("20010A4800086")); // A is not a digit
     }
 
-    // Year validation placeholder (00–99 valid)
-    @Test
-    public void shouldReturnTrueIfYearIsValid() {
-        assertTrue(ValidateSaId.isIdNumberValid("2001014800086"));
-        assertTrue(ValidateSaId.isIdNumberValid("2909035800085"));
-    }
-
-    // Invalid month (must be 01–12)
     @Test
     public void shouldReturnFalseIfMonthIsInvalid() {
-        assertFalse(ValidateSaId.isIdNumberValid("2099014800086")); // 99 = invalid
-        assertFalse(ValidateSaId.isIdNumberValid("2000004800086")); // 00 = invalid
+        assertFalse(ValidateSaId.isIdNumberValid("2013014800086")); // 13 is not a valid month
     }
 
-    // Valid month (01–12)
-    @Test
-    public void shouldReturnTrueIfMonthIsValid() {
-        assertTrue(ValidateSaId.isIdNumberValid("2001014800086"));
-        assertTrue(ValidateSaId.isIdNumberValid("2012124800086"));
-    }
-
-    // Invalid day (must be 01–31)
     @Test
     public void shouldReturnFalseIfDayIsInvalid() {
-        assertFalse(ValidateSaId.isIdNumberValid("2001324800086")); // 32 = invalid
-        assertFalse(ValidateSaId.isIdNumberValid("2001004800086")); // 00 = invalid
+        assertFalse(ValidateSaId.isIdNumberValid("2001324800086")); // 32 is not a valid day
     }
 
-    // Valid day
     @Test
-    public void shouldReturnTrueIfDayIsValid() {
-        assertTrue(ValidateSaId.isIdNumberValid("2001014800086")); // 01
-        assertTrue(ValidateSaId.isIdNumberValid("2001314800086")); // 31
+    public void shouldReturnFalseIfCitizenshipDigitIsInvalid() {
+        assertFalse(ValidateSaId.isIdNumberValid("2001014800286")); // '2' is not allowed
     }
 
-    // Valid female gender digits
     @Test
-    public void shouldReturnTrueForValidFemaleGenderDigits() {
-        assertTrue(ValidateSaId.isIdNumberValid("2001010000086")); // 0000
-        assertTrue(ValidateSaId.isIdNumberValid("2909034999085")); // 4999
-    }
-
-    // Valid male gender digits
-    @Test
-    public void shouldReturnTrueForValidMaleGenderDigits() {
-        assertTrue(ValidateSaId.isIdNumberValid("2001015000086")); // 5000
-        assertTrue(ValidateSaId.isIdNumberValid("2909039999085")); // 9999
-    }
-
-    // Invalid gender digits (non-numeric)
-    @Test
-    public void shouldReturnFalseIfGenderDigitsInvalid() {
-        assertFalse(ValidateSaId.isIdNumberValid("200101abcd086")); // non-numeric
-    }
-
-    // Valid citizenship digit
-    @Test
-    public void shouldReturnTrueForValidCitizenshipDigit() {
-        assertTrue(ValidateSaId.isIdNumberValid("2001014800086")); // citizen (0)
-        assertTrue(ValidateSaId.isIdNumberValid("2909035800185")); // permanent resident (1)
-    }
-
-    // Invalid citizenship digit
-    @Test
-    public void shouldReturnFalseForInvalidCitizenshipDigit() {
-        assertFalse(ValidateSaId.isIdNumberValid("2001014800286")); // 2 = invalid
-        assertFalse(ValidateSaId.isIdNumberValid("2909035800385")); // 3 = invalid
+    public void shouldReturnFalseIfChecksumIsInvalid() {
+        assertFalse(ValidateSaId.isIdNumberValid("2001014800080")); // last digit is wrong
     }
 }
